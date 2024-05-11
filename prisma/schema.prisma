@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,84 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Comments {
+  id        Int      @id @default(autoincrement())
+  job_id    Int?
+  user_id   Int?
+  createdAt DateTime @db.Timestamp(0)
+  content   String   @db.VarChar(255)
+  stars     Int?     @default(0)
+  Jobs      Jobs?    @relation(fields: [job_id], references: [job_id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_ibfk_1")
+  Users     Users?   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_ibfk_2")
+
+  @@index([job_id], map: "job_id")
+  @@index([user_id], map: "user_id")
+}
+
+model DetailJobTypes {
+  job_detail_type_id Int       @id @default(autoincrement())
+  detail_type_name   String    @db.VarChar(250)
+  image              String?   @db.VarChar(255)
+  job_type_id        Int?
+  JobTypes           JobTypes? @relation(fields: [job_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "DetailJobTypes_ibfk_1")
+  Jobs               Jobs[]
+
+  @@index([job_type_id], map: "job_type_id")
+}
+
+model HireJobs {
+  id        Int       @id @default(autoincrement())
+  job_id    Int?
+  user_id   Int?
+  hire_date DateTime? @db.Timestamp(0)
+  is_done   Boolean?
+  Jobs      Jobs?     @relation(fields: [job_id], references: [job_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_1")
+  Users     Users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_2")
+
+  @@index([job_id], map: "job_id")
+  @@index([user_id], map: "user_id")
+}
+
+model JobTypes {
+  id             Int              @id @default(autoincrement())
+  job_type_name  String           @db.VarChar(250)
+  DetailJobTypes DetailJobTypes[]
+}
+
+model Jobs {
+  job_id             Int             @id @default(autoincrement())
+  job_name           String          @db.VarChar(250)
+  rate               Int?            @default(0)
+  price              Int
+  image              String?         @db.VarChar(255)
+  job_desc           String?         @db.VarChar(255)
+  job_short_desc     String?         @db.VarChar(100)
+  star               Int?
+  job_creator        Int?
+  job_detail_type_id Int?
+  Comments           Comments[]
+  HireJobs           HireJobs[]
+  Users              Users?          @relation(fields: [job_creator], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_1")
+  DetailJobTypes     DetailJobTypes? @relation(fields: [job_detail_type_id], references: [job_detail_type_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_2")
+
+  @@index([job_creator], map: "job_creator")
+  @@index([job_detail_type_id], map: "job_detail_type_id")
+}
+
+model Users {
+  user_id       Int        @id @default(autoincrement())
+  full_name     String?    @db.VarChar(150)
+  email         String     @db.VarChar(250)
+  pass_word     String     @db.VarChar(255)
+  phone         String?    @db.VarChar(11)
+  birth_day     DateTime?  @db.Date
+  gender        Boolean?   @db.Bit(1)
+  role          String?    @db.VarChar(10)
+  skill         String?    @db.VarChar(100)
+  certification String?    @db.VarChar(250)
+  Comments      Comments[]
+  HireJobs      HireJobs[]
+  Jobs          Jobs[]
 }
