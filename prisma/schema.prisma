@@ -82,6 +82,7 @@ model Users {
   role          String?    @db.VarChar(10)
   skill         String?    @db.VarChar(100)
   certification String?    @db.VarChar(250)
+  refresh_token String?    @db.VarChar(250)
   Comments      Comments[]
   HireJobs      HireJobs[]
   Jobs          Jobs[]

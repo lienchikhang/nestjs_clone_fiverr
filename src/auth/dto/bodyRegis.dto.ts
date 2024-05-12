@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsStrongPassword } from "class-validator"
 
-export class BodyDto {
+export class BodyRegisterDto {
     @IsNotEmpty()
     @IsEmail()
     email: string

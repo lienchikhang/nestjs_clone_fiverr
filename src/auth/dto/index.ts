@@ -1,1 +1,2 @@
-export * from './body.dto';
+export * from './bodyRegis.dto';
+export * from './bodyLogin.dto';

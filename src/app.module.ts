@@ -9,6 +9,8 @@ import { JobTypeModule } from './job-type/job-type.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ResponseModule } from './response/response.module';
 import { BcryptModule } from './bcrypt/bcrypt.module';
+import { TokenModule } from './token/token.module';
+import { ErrorHandlerModule } from './error-handler/error-handler.module';
 
 
 @Module({
@@ -23,6 +25,8 @@ import { BcryptModule } from './bcrypt/bcrypt.module';
     PrismaModule,
     ResponseModule,
     BcryptModule,
+    TokenModule,
+    ErrorHandlerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
