@@ -14,6 +14,7 @@ import { ErrorHandlerModule } from './error-handler/error-handler.module';
 import { AuthRefreshModule } from './auth-refresh/auth-refresh.module';
 import { JwtModule } from '@nestjs/jwt';
 import { SlugModule } from './slug/slug.module';
+import { DetailJobTypeModule } from './detail-job-type/detail-job-type.module';
 
 
 @Module({
@@ -35,6 +36,7 @@ import { SlugModule } from './slug/slug.module';
     ErrorHandlerModule,
     AuthRefreshModule,
     SlugModule,
+    DetailJobTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

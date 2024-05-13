@@ -22,11 +22,13 @@ model Comments {
 }
 
 model DetailJobTypes {
-  job_detail_type_id Int       @id @default(autoincrement())
-  detail_type_name   String    @db.VarChar(250)
-  image              String?   @db.VarChar(255)
+  job_detail_type_id Int                  @id @default(autoincrement())
+  detail_type_name   String               @db.VarChar(250)
+  image              String?              @db.VarChar(255)
   job_type_id        Int?
-  JobTypes           JobTypes? @relation(fields: [job_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "DetailJobTypes_ibfk_1")
+  isDeleted          Boolean?             @default(false)
+  DetailJobTypeLinks DetailJobTypeLinks[]
+  JobTypes           JobTypes?            @relation(fields: [job_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "DetailJobTypes_ibfk_1")
   Jobs               Jobs[]
 
   @@index([job_type_id], map: "job_type_id")
@@ -38,6 +40,7 @@ model HireJobs {
   user_id   Int?
   hire_date DateTime? @db.Timestamp(0)
   is_done   Boolean?
+  isDeleted Boolean?  @default(false)
   Jobs      Jobs?     @relation(fields: [job_id], references: [job_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_1")
   Users     Users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_2")
 
@@ -53,23 +56,27 @@ model JobTypes {
 }
 
 model Jobs {
-  job_id             Int             @id @default(autoincrement())
-  job_name           String          @db.VarChar(250)
-  rate               Int?            @default(0)
-  price              Int
-  image              String?         @db.VarChar(255)
-  job_desc           String?         @db.VarChar(255)
-  job_short_desc     String?         @db.VarChar(100)
-  star               Int?
-  job_creator        Int?
-  job_detail_type_id Int?
-  Comments           Comments[]
-  HireJobs           HireJobs[]
-  Users              Users?          @relation(fields: [job_creator], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_1")
-  DetailJobTypes     DetailJobTypes? @relation(fields: [job_detail_type_id], references: [job_detail_type_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_2")
+  job_id                  Int                 @id @default(autoincrement())
+  job_name                String              @db.VarChar(250)
+  rate                    Int?                @default(0)
+  price                   Int
+  image                   String?             @db.VarChar(255)
+  job_desc                String?             @db.VarChar(255)
+  job_short_desc          String?             @db.VarChar(100)
+  star                    Int?
+  job_creator             Int?
+  job_detail_type_id      Int?
+  isDeleted               Boolean?            @default(false)
+  job_detail_type_link_id Int?
+  Comments                Comments[]
+  HireJobs                HireJobs[]
+  Users                   Users?              @relation(fields: [job_creator], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_1")
+  DetailJobTypes          DetailJobTypes?     @relation(fields: [job_detail_type_id], references: [job_detail_type_id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_2")
+  DetailJobTypeLinks      DetailJobTypeLinks? @relation(fields: [job_detail_type_link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Jobs_ibfk_3")
 
   @@index([job_creator], map: "job_creator")
   @@index([job_detail_type_id], map: "job_detail_type_id")
+  @@index([job_detail_type_link_id], map: "job_detail_type_link_id")
 }
 
 model Users {
@@ -87,4 +94,15 @@ model Users {
   Comments      Comments[]
   HireJobs      HireJobs[]
   Jobs          Jobs[]
+}
+
+model DetailJobTypeLinks {
+  id                    Int             @id @default(autoincrement())
+  detail_type_link_name String          @db.VarChar(150)
+  job_detail_type_id    Int?
+  isDeleted             Boolean?        @default(false)
+  DetailJobTypes        DetailJobTypes? @relation(fields: [job_detail_type_id], references: [job_detail_type_id], onDelete: NoAction, onUpdate: NoAction, map: "DetailJobTypeLinks_ibfk_1")
+  Jobs                  Jobs[]
+
+  @@index([job_detail_type_id], map: "job_detail_type_id")
 }
