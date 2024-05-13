@@ -13,6 +13,7 @@ import { TokenModule } from './token/token.module';
 import { ErrorHandlerModule } from './error-handler/error-handler.module';
 import { AuthRefreshModule } from './auth-refresh/auth-refresh.module';
 import { JwtModule } from '@nestjs/jwt';
+import { SlugModule } from './slug/slug.module';
 
 
 @Module({
@@ -33,6 +34,7 @@ import { JwtModule } from '@nestjs/jwt';
     TokenModule,
     ErrorHandlerModule,
     AuthRefreshModule,
+    SlugModule,
   ],
   controllers: [AppController],
   providers: [AppService],
