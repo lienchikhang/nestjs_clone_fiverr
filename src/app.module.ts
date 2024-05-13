@@ -11,12 +11,17 @@ import { ResponseModule } from './response/response.module';
 import { BcryptModule } from './bcrypt/bcrypt.module';
 import { TokenModule } from './token/token.module';
 import { ErrorHandlerModule } from './error-handler/error-handler.module';
+import { AuthRefreshModule } from './auth-refresh/auth-refresh.module';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    JwtModule.register({
+      global: true,
     }),
     AuthModule,
     JobModule,
@@ -27,6 +32,7 @@ import { ErrorHandlerModule } from './error-handler/error-handler.module';
     BcryptModule,
     TokenModule,
     ErrorHandlerModule,
+    AuthRefreshModule,
   ],
   controllers: [AppController],
   providers: [AppService],

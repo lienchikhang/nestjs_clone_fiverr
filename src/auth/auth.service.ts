@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { BodyLoginDto, BodyRegisterDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ResponseService } from 'src/response/response.service';
@@ -43,6 +43,7 @@ export class AuthService {
                 }
             })
 
+            //close connection
             await this.prisma.$disconnect();
 
             return this.response.create(201, 'Create successfully!', email);
@@ -100,6 +101,47 @@ export class AuthService {
 
         } catch (error) {
             throw this.errorHandler.create(error.status, error.response);
+        }
+
+    }
+
+    async refreshToken(userId: number, token: string) {
+        try {
+
+            //connect
+            await this.prisma.$connect();
+
+            //check userId exist
+            const isExist = await this.prisma.users.findUnique({
+                where: {
+                    user_id: userId,
+                }
+            })
+
+            if (!isExist) throw new NotFoundException(this.response.create(404, 'User not existed', null));
+
+
+
+            //compare request token vs token's database
+            const isEqual = token === isExist.refresh_token;
+            if (!isEqual) throw new UnauthorizedException(this.response.create(401, 'Unauthorized', null));
+
+
+
+            //decode token
+            const payload = this.token.decode(token);
+
+
+            //create new accessToken
+            const accessToken = this.token.createAccess({ userId, role: payload.role }, '15m');
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Refresh successfully!', accessToken);
+
+        } catch (error) {
+            return this.errorHandler.create(error.status, error.response);
         }
 
     }

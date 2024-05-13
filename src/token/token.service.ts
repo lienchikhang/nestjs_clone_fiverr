@@ -9,19 +9,28 @@ export class TokenService {
         private config: ConfigService
     ) { }
 
-    createAccess(payload: PayloadDto): string {
+    createAccess(payload: PayloadDto, exp?: string): string {
         return sign(payload, this.config.get('SECRET_ACCESS_TOKEN'), {
-            expiresIn: '15m',
+            expiresIn: '10s',
         });
     }
 
     createRefresh(payload: PayloadDto) {
         return sign(payload, this.config.get('SECRET_REFRESH_TOKEN'), {
-            expiresIn: '1d',
+            expiresIn: '20s',
         });
     }
 
     decode(token: string): PayloadDecodeDto {
         return decode(token) as PayloadDecodeDto;
+    }
+
+    verifyRefresh(token: string) {
+        try {
+            verify(token, this.config.get('SECRET_REFRESH_TOKEN'));
+        } catch (error) {
+            console.log('error in verifyRefresh:::', error)
+        }
+        // return "123"
     }
 }

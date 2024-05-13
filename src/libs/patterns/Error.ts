@@ -1,13 +1,17 @@
-import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 
 export class ErrorCreator {
     static create(type: number, payload) {
         switch (type) {
             case 400:
                 return new ErrorBadRequest(payload);
+            case 401:
+                return new ErrorUnAuthorized(payload);
+            case 403:
+                return new ErrorForbidden(payload);
             case 404:
                 return new ErrorNotFound(payload);
-            case 500:
+            default:
                 return new ErrorInternalServer(payload);
 
         }
@@ -38,5 +42,23 @@ export class ErrorNotFound {
 
     send() {
         throw new NotFoundException(this.payload);
+    }
+}
+
+export class ErrorForbidden {
+    constructor(private payload) {
+    }
+
+    send() {
+        throw new ForbiddenException(this.payload);
+    }
+}
+
+export class ErrorUnAuthorized {
+    constructor(private payload) {
+    }
+
+    send() {
+        throw new UnauthorizedException(this.payload);
     }
 }
