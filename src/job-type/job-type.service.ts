@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { BodyJobType } from './dto';
 import { ErrorHandlerService } from 'src/error-handler/error-handler.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -55,12 +55,19 @@ export class JobTypeService {
 
             //get all jobtypes
             const jobtypes = await this.prisma.jobTypes.findMany({
+                where: {
+                    isDeleted: false,
+                },
                 take: pageSize,
                 skip: (page - 1) * pageSize,
             })
 
             //cal total page
-            const totalEle = await this.prisma.jobTypes.count();
+            const totalEle = await this.prisma.jobTypes.count({
+                where: {
+                    isDeleted: false,
+                }
+            });
 
             const totalPage = Math.ceil(totalEle / pageSize);
 
@@ -81,15 +88,110 @@ export class JobTypeService {
         }
     }
 
-    getDetailById() {
+    async getDetailById(id: number) {
+        try {
 
+            //connect
+            await this.prisma.$connect();
+
+            //get detail
+            const jobType = await this.prisma.jobTypes.findUnique({
+                where: {
+                    id,
+                }
+            })
+
+
+            //check exist
+            if (!jobType) throw new NotFoundException(this.response.create(404, 'Type not found', null));
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Get successfully!', jobType);
+
+        } catch (error) {
+            console.log('error', error);
+            return this.errorHandler.create(error.status, error.response);
+        }
     }
 
-    update() {
+    async update(id: number, { jobTypeName }: BodyJobType) {
+        try {
 
+            //connect
+            await this.prisma.$connect();
+
+            //check exist
+            const isExist = await this.prisma.jobTypes.findUnique({
+                where: {
+                    id,
+                }
+            })
+
+            if (!isExist) throw new NotFoundException(this.response.create(404, 'Type not found', null));
+
+            //update
+            const updatedJobType = await this.prisma.jobTypes.update({
+                select: {
+                    id: true,
+                    job_type_name: true
+                },
+                where: {
+                    id: isExist.id,
+                },
+                data: {
+                    job_type_name: this.slug.convert(jobTypeName),
+                }
+            });
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Update successfully!', updatedJobType);
+
+        } catch (error) {
+            console.log('error', error);
+            return this.errorHandler.create(error.status, error.response);
+        }
     }
 
-    delete() {
+    async delete(id: number) {
+        try {
 
+            //connect
+            await this.prisma.$connect();
+
+            //check exist
+            const isExist = await this.prisma.jobTypes.findUnique({
+                where: {
+                    id,
+                }
+            })
+
+            if (!isExist) throw new NotFoundException(this.response.create(404, 'Type not found', null));
+
+            const deleteType = await this.prisma.jobTypes.update({
+                select: {
+                    id: true,
+                    job_type_name: true
+                },
+                where: {
+                    id: isExist.id,
+                },
+                data: {
+                    isDeleted: true
+                }
+            })
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Delete successfully!', deleteType);
+
+        } catch (error) {
+            console.log('error', error);
+            return this.errorHandler.create(error.status, error.response);
+        }
     }
 }

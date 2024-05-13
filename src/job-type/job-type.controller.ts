@@ -28,7 +28,7 @@ export class JobTypeController {
   getDetailById(
     @Param('id') id: string,
   ) {
-    return this.jobTypeService.getDetailById();
+    return this.jobTypeService.getDetailById(Number(id));
   }
 
   @Put('update/:id')
@@ -37,7 +37,7 @@ export class JobTypeController {
     @Body() body: BodyJobType,
     @Param('id') id: string,
   ) {
-    return this.jobTypeService.update();
+    return this.jobTypeService.update(Number(id), body);
   }
 
   @Delete('delete/:id')
@@ -45,6 +45,6 @@ export class JobTypeController {
   delete(
     @Param('id') id: string,
   ) {
-    return this.jobTypeService.delete();
+    return this.jobTypeService.delete(Number(id));
   }
 }

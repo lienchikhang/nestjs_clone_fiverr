@@ -48,6 +48,7 @@ model HireJobs {
 model JobTypes {
   id             Int              @id @default(autoincrement())
   job_type_name  String           @db.VarChar(250)
+  isDeleted      Boolean?         @default(false)
   DetailJobTypes DetailJobTypes[]
 }
 
