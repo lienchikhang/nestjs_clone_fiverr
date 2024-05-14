@@ -15,6 +15,7 @@ import { AuthRefreshModule } from './auth-refresh/auth-refresh.module';
 import { JwtModule } from '@nestjs/jwt';
 import { SlugModule } from './slug/slug.module';
 import { DetailJobTypeModule } from './detail-job-type/detail-job-type.module';
+import { CompressImageModule } from './compress-image/compress-image.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { DetailJobTypeModule } from './detail-job-type/detail-job-type.module';
     AuthRefreshModule,
     SlugModule,
     DetailJobTypeModule,
+    CompressImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
