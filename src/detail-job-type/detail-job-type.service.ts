@@ -5,6 +5,7 @@ import { BodyDetailJobType, BodyDetailJobTypeLink, BodyDetailJobTypeUpdate, Deta
 import { ResponseService } from 'src/response/response.service';
 import { SlugService } from 'src/slug/slug.service';
 import { CompressImageService } from 'src/compress-image/compress-image.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class DetailJobTypeService {
@@ -14,6 +15,7 @@ export class DetailJobTypeService {
         private response: ResponseService,
         private slug: SlugService,
         private compressImage: CompressImageService,
+        private cloudinary: CloudinaryService,
     ) { }
 
     async create({ detailTypeName, jobTypeId }: BodyDetailJobType) {
@@ -57,14 +59,31 @@ export class DetailJobTypeService {
     async uploadImage(file: Express.Multer.File, detailJobTypeId: number) {
         try {
 
+            console.log('file in uploadImage', file)
+
             //connect
             await this.prisma.$connect();
 
             //compress image
+            await this.compressImage.start(file.filename);
 
+            //upload to cloudinary
+            const rs = await this.cloudinary.upload(file.filename);
+
+            //update detailJob
+            await this.prisma.detailJobTypes.update({
+                where: {
+                    job_detail_type_id: detailJobTypeId,
+                },
+                data: {
+                    image: rs.url,
+                }
+            })
 
             //close connection
             await this.prisma.$disconnect();
+
+            return this.response.create(201, 'Upload successfully!', rs.url);
 
         } catch (error) {
             console.log('error::', error);

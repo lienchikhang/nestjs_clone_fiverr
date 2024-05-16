@@ -1,15 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import Jimp from 'jimp';
+import * as path from 'path';
 
 @Injectable()
 export class CompressImageService {
-    constructor() { }
+
+    private temp = path.join(process.cwd(), 'public', 'images', 'in');
+    private final = path.join(process.cwd(), 'public', 'images', 'out');
+    // constructor(
+    //     private tempPath: string,
+    //     private finalPath: string,
+    // ) {
+    //     this.tempPath = path.join(process.cwd(), 'public', 'images', 'in');
+    //     this.finalPath = path.join(process.cwd(), 'public', 'images', 'out');
+    // }
 
     start(filePath: string) {
-        Jimp
-            .read(filePath)
-            .then(image => {
-                return image.quality(10)
-            })
+        return new Promise((resolve) => {
+            Jimp
+                .read(path.join(this.temp, filePath))
+                .then(image => {
+                    return image.quality(10).write(path.join(this.final, filePath));
+                })
+                .then(() => {
+                    console.log('Compress successfully!');
+                    resolve(path.join(this.final, filePath));
+                })
+        })
     }
 }
