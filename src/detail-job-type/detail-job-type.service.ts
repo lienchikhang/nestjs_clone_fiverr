@@ -169,6 +169,12 @@ export class DetailJobTypeService {
 
     async getDetailById() {
 
+        try {
+
+        } catch (error) {
+
+        }
+
     }
 
     async update(body: BodyDetailJobTypeUpdate, detailJobTypeId: number) {
@@ -276,8 +282,30 @@ export class DetailJobTypeService {
         }
     }
 
-    async delete() {
+    async delete(detailJobTypeId: number) {
+        try {
+            //connect
+            await this.prisma.$connect();
 
+            const rs = await this.prisma.detailJobTypes.update({
+                where: {
+                    job_detail_type_id: detailJobTypeId,
+                },
+                data: {
+                    isDeleted: true,
+                }
+            })
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Delete successfully!', rs);
+
+
+        } catch (error) {
+            console.log('error:: ', error);
+            return this.errorHandler.create(error.status, error.response);
+        }
     }
 
 

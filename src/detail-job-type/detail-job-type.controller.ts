@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { DetailJobTypeService } from './detail-job-type.service';
 import { BodyDetailJobType, BodyDetailJobTypeLink, BodyDetailJobTypeUpdate, DetailJobTypeLink, DetailJobTypeLinkUpdate } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -55,5 +55,13 @@ export class DetailJobTypeController {
     @Param('id') id: string,
   ) {
     return this.detailJobTypeService.updateLink(body, Number(id));
+  }
+
+  @Delete('delete/:id')
+  @HttpCode(200)
+  delete(
+    @Param('id') id: string,
+  ) {
+    return this.detailJobTypeService.delete(Number(id));
   }
 }
