@@ -167,12 +167,37 @@ export class DetailJobTypeService {
         }
     }
 
-    async getDetailById() {
+    async getDetailById(jobDetailTypeId: number) {
 
         try {
 
-        } catch (error) {
+            //connect
+            await this.prisma.$connect();
 
+            const detailJobType = await this.prisma.detailJobTypes.findUnique({
+                select: {
+                    detail_type_name: true,
+                    job_type_id: true,
+                    DetailJobTypeLinks: {
+                        select: {
+                            detail_type_link_name: true,
+                            id: true,
+                        }
+                    }
+                },
+                where: {
+                    job_detail_type_id: jobDetailTypeId
+                }
+            })
+
+            //close connection
+            await this.prisma.$disconnect();
+
+            return this.response.create(200, 'Get successfully!', detailJobType);
+
+        } catch (error) {
+            console.log('error:: ', error);
+            return this.errorHandler.create(error.status, error.response);
         }
 
     }
