@@ -17,6 +17,7 @@ import { SlugModule } from './slug/slug.module';
 import { DetailJobTypeModule } from './detail-job-type/detail-job-type.module';
 import { CompressImageModule } from './compress-image/compress-image.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 
 @Module({

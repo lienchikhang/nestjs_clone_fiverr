@@ -91,6 +91,8 @@ model Users {
   skill         String?    @db.VarChar(100)
   certification String?    @db.VarChar(250)
   refresh_token String?    @db.VarChar(250)
+  isDeleted     Boolean?   @default(false)
+  avatar        String?    @db.VarChar(255)
   Comments      Comments[]
   HireJobs      HireJobs[]
   Jobs          Jobs[]
