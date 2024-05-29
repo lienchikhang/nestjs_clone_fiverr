@@ -11,13 +11,13 @@ export class TokenService {
 
     createAccess(payload: PayloadDto, exp?: string): string {
         return sign(payload, this.config.get('SECRET_ACCESS_TOKEN'), {
-            expiresIn: '10s',
+            expiresIn: '5m',
         });
     }
 
     createRefresh(payload: PayloadDto) {
         return sign(payload, this.config.get('SECRET_REFRESH_TOKEN'), {
-            expiresIn: '20s',
+            expiresIn: '20m',
         });
     }
 
