@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CompressImageService } from 'src/compress-image/compress-image.service';
 import { ErrorHandlerService } from 'src/error-handler/error-handler.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,6 +6,8 @@ import { ResponseService } from 'src/response/response.service';
 import { SlugService } from 'src/slug/slug.service';
 import { BodyCreateJobDto } from './dto';
 import { BodyUpdateDto } from 'src/user/dto';
+import { bodyUpdateJobDto } from './dto/bodyUpdateJob.dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class JobService {
@@ -15,6 +17,7 @@ export class JobService {
         private readonly response: ResponseService,
         private readonly compress: CompressImageService,
         private readonly slug: SlugService,
+        private readonly cloudinary: CloudinaryService,
     ) { }
 
 
@@ -35,7 +38,7 @@ export class JobService {
                     rate: true,
                 },
                 where: {
-
+                    isDeleted: false,
                 },
                 take: pageSize,
                 skip: (page - 1) * pageSize,
@@ -47,7 +50,7 @@ export class JobService {
             //get total page
             const totalPage = Math.ceil(total / pageSize);
 
-            return this.response.create(200, 'Get successfully!', { data: jobs, page: totalPage });
+            return this.response.create(HttpStatus.OK, 'Get successfully!', { data: jobs, page: totalPage });
 
         } catch (error) {
             console.log('error:: ', error);
@@ -58,11 +61,61 @@ export class JobService {
         }
     }
 
-    async getDetailById(jobId: number) {
+    async getDetailById(jobId: number, pageCmt: number = 1) {
         try {
 
             //connect
             await this.prisma.$connect();
+
+            const job = await this.prisma.jobs.findUnique({
+                select: {
+                    job_name: true,
+                    rate: true,
+                    star: true,
+                    job_desc: true,
+                    image: true,
+                    price: true,
+                    job_short_desc: true,
+                    Users: {
+                        select: {
+                            avatar: true,
+                            full_name: true,
+                        }
+                    },
+                    Comments: {
+                        select: {
+                            stars: true,
+                            createdAt: true,
+                            content: true,
+                            Users: {
+                                select: {
+                                    avatar: true,
+                                    full_name: true,
+                                }
+                            }
+                        },
+                        take: 5,
+                        skip: (pageCmt - 1) * 5
+                    }
+                },
+                where: {
+                    job_id: jobId,
+                    isDeleted: false,
+                }
+            })
+
+            if (!job) throw new NotFoundException(this.response.create(HttpStatus.NOT_FOUND, 'Job not found', null));
+
+            //get total comment
+            const totalCmt = await this.prisma.comments.count({
+                where: {
+                    job_id: jobId
+                }
+            })
+
+            const totalPageCmt = Math.ceil(totalCmt / 5);
+
+            return this.response.create(HttpStatus.OK, 'Get successfully!', { data: job, page: totalPageCmt });
 
         } catch (error) {
             console.log('error:: ', error);
@@ -110,7 +163,7 @@ export class JobService {
                 },
             })
 
-            return this.response.create(201, 'Create successfully!', rs);
+            return this.response.create(HttpStatus.CREATED, 'Create successfully!', rs);
 
         } catch (error) {
             console.log('error:: ', error);
@@ -121,11 +174,41 @@ export class JobService {
         }
     }
 
-    async update(jobId: number, data: BodyUpdateDto) {
+    async update(jobId: number, { job_name, ...rest }: bodyUpdateJobDto, userId: number) {
         try {
 
             //connect
             await this.prisma.$connect();
+
+            //check job exist
+            const isExist = await this.prisma.jobs.findUnique({
+                where: {
+                    job_id: jobId,
+                }
+            })
+
+            if (!isExist) throw new NotFoundException(this.response.create(HttpStatus.NOT_FOUND, 'Job not found', null));
+
+            //check userId valid
+            if (!(userId === isExist.job_creator)) throw new BadRequestException(this.response.create(HttpStatus.BAD_REQUEST, 'Dont have permission!', null));
+
+            //case update job_name
+            if (job_name) {
+                job_name = this.slug.convert(job_name);
+            }
+
+            //update
+            const rs = await this.prisma.jobs.update({
+                data: {
+                    job_name,
+                    ...rest,
+                },
+                where: {
+                    job_id: jobId,
+                }
+            });
+
+            return this.response.create(HttpStatus.OK, 'Update successfully!', rs);
 
         } catch (error) {
             console.log('error:: ', error);
@@ -136,11 +219,35 @@ export class JobService {
         }
     }
 
-    async delete(jobId: number) {
+    async delete(jobId: number, userId: number) {
         try {
 
             //connect
             await this.prisma.$connect();
+
+            //check job exist
+            const isExist = await this.prisma.jobs.findUnique({
+                where: {
+                    job_id: jobId,
+                }
+            });
+
+            if (!isExist) throw new NotFoundException(this.response.create(HttpStatus.NOT_FOUND, 'Job not found!', null));
+
+            //check userId valid
+            if (userId !== isExist.job_creator) throw new BadRequestException(this.response.create(HttpStatus.BAD_REQUEST, 'Dont have permission', null));
+
+            //delete
+            const rs = await this.prisma.jobs.update({
+                data: {
+                    isDeleted: true,
+                },
+                where: {
+                    job_id: isExist.job_id,
+                }
+            });
+
+            return this.response.create(HttpStatus.OK, 'Delete successfully!', rs);
 
         } catch (error) {
             console.log('error:: ', error);
@@ -151,11 +258,32 @@ export class JobService {
         }
     }
 
-    async uploadImage(jobId: number) {
+    async uploadImage(jobId: number, userId: number, file: Express.Multer.File) {
         try {
 
             //connect
             await this.prisma.$connect();
+
+            //check exist job
+            const isExist = await this.prisma.jobs.findUnique({
+                where: {
+                    job_id: jobId,
+                }
+            })
+
+            if (!isExist) throw new NotFoundException(this.response.create(HttpStatus.NOT_FOUND, 'Job not found', null));
+
+            //check userId valid
+            if (userId !== isExist.job_creator) throw new BadRequestException(this.response.create(HttpStatus.BAD_REQUEST, 'Dont have permission', null));
+
+            //compress image
+            await this.compress.start(file.filename);
+
+            //upload
+            const rs = await this.cloudinary.upload(file.filename);
+
+            return this.response.create(HttpStatus.OK, 'Upload successfully!', rs.url);
+
 
         } catch (error) {
             console.log('error:: ', error);

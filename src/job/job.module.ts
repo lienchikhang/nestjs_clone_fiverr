@@ -9,18 +9,41 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ErrorHandlerService } from 'src/error-handler/error-handler.service';
 import { SlugService } from 'src/slug/slug.service';
 import { ResponseService } from 'src/response/response.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import * as path from 'path';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CompressImageModule } from 'src/compress-image/compress-image.module';
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { SlugModule } from 'src/slug/slug.module';
+import { ResponseModule } from 'src/response/response.module';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [ErrorHandlerModule],
+  imports: [
+    ErrorHandlerModule,
+    MulterModule.register({
+      storage: diskStorage({
+        destination: path.join(process.cwd(), 'public', 'images', 'in'),
+        filename(req, file, callback) {
+          callback(null, new Date().getTime().toString() + '.' + file.originalname.split('.')[1]);
+        },
+      }),
+      limits: {
+        files: 1,
+        fileSize: 30 * 1024 * 1024,
+      }
+    }),
+    CompressImageModule,
+    PrismaModule,
+    SlugModule,
+    ResponseModule,
+    CloudinaryModule
+  ],
   controllers: [JobController],
   providers: [
     JobService,
     JwtStrategy,
-    CompressImageService,
-    PrismaService,
-    ErrorHandlerService,
-    SlugService,
-    ResponseService,
   ],
 })
 export class JobModule { }

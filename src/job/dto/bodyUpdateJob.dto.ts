@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from "class-validator"
 
 export class bodyUpdateJobDto {
 
@@ -10,6 +10,7 @@ export class bodyUpdateJobDto {
     @IsOptional()
     @IsNotEmpty()
     @IsNumber()
+    @IsPositive()
     price: number
 
     @IsOptional()
@@ -30,6 +31,7 @@ export class bodyUpdateJobDto {
     @IsOptional()
     @IsNotEmpty()
     @IsNumber()
+    @IsPositive()
     star: number
 
     @IsOptional()
@@ -50,5 +52,6 @@ export class bodyUpdateJobDto {
     @IsOptional()
     @IsNotEmpty()
     @IsNumber()
+    @IsPositive()
     rate: number
 }

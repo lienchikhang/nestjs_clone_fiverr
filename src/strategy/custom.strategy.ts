@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ExecutionContext, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JsonWebTokenError, TokenExpiredError } from "@nestjs/jwt";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseService } from "src/response/response.service";
@@ -11,10 +11,13 @@ export class CustomGuard extends AuthGuard('jwt') {
 
     }
     handleRequest(err, user, info: Error, context: ExecutionContext) {
+        console.log({ info })
         if (info instanceof TokenExpiredError) {
-            throw new UnauthorizedException(this.responseService.create(401, 'TokenExpiredError', null));
+            throw new UnauthorizedException(this.responseService.create(HttpStatus.FORBIDDEN, 'TokenExpiredError', null));
         } else if (info instanceof JsonWebTokenError) {
-            throw new UnauthorizedException(this.responseService.create(403, 'JsonWebTokenError', null));
+            throw new UnauthorizedException(this.responseService.create(HttpStatus.UNAUTHORIZED, 'JsonWebTokenError', null));
+        } else if (info instanceof Error && info.message === 'No auth token') {
+            throw new UnauthorizedException(this.responseService.create(HttpStatus.UNAUTHORIZED, 'NoAuthTokenError', null));
         }
         else {
             const token = this.extractTokenFromRequest(context);
