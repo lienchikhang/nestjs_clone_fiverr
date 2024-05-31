@@ -39,7 +39,7 @@ model HireJobs {
   job_id    Int?
   user_id   Int?
   hire_date DateTime? @db.Timestamp(0)
-  is_done   Boolean?
+  is_done   Boolean?  @default(false)
   isDeleted Boolean?  @default(false)
   Jobs      Jobs?     @relation(fields: [job_id], references: [job_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_1")
   Users     Users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "HireJobs_ibfk_2")
@@ -61,9 +61,9 @@ model Jobs {
   rate                    Int?                @default(0)
   price                   Int
   image                   String?             @db.VarChar(255)
-  job_desc                String?             @db.VarChar(255)
-  job_short_desc          String?             @db.VarChar(100)
-  star                    Int?
+  job_desc                String              @db.VarChar(255)
+  job_short_desc          String              @db.VarChar(100)
+  star                    Int?                @default(0)
   job_creator             Int?
   job_detail_type_id      Int?
   isDeleted               Boolean?            @default(false)

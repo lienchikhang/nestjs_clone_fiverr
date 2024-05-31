@@ -18,6 +18,7 @@ import { DetailJobTypeModule } from './detail-job-type/detail-job-type.module';
 import { CompressImageModule } from './compress-image/compress-image.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { HireJobModule } from './hire-job/hire-job.module';
 
 
 @Module({
@@ -42,6 +43,7 @@ import { MulterModule } from '@nestjs/platform-express';
     DetailJobTypeModule,
     CompressImageModule,
     CloudinaryModule,
+    HireJobModule,
   ],
   controllers: [AppController],
   providers: [AppService],
