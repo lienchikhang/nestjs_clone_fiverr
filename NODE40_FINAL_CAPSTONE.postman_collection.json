@@ -1,0 +1,558 @@
+{
+	"info": {
+		"_postman_id": "8cf88d87-8f6e-47f2-9cbc-ceb3242cee1d",
+		"name": "NODE40_FINAL_CAPSTONE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25217887"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "REGISTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chikhang16a18@gmail.com\",\n    \"password\": \"123456@Ll\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chikhang11a18@gmail.com\",\n    \"password\": \"123456@Ll\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "REFRESH",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNTU4ODU4NiwiZXhwIjoxNzE1NTg4NjA2fQ.ZbvK_8SAESw9ZRTcBsmyxgXEVrdWnSr0H8CCgsVbZ3",
+								"type": "text"
+							}
+						],
+						"url": "{{domain}}auth/refresh"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JOB TYPE",
+			"item": [
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobTypeName\": \"Programming & Tech\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}job-type/create"
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}job-type/get-all?pageSize=4",
+							"host": [
+								"{{domain}}job-type"
+							],
+							"path": [
+								"get-all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DETAIL BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}job-type/get/1"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE ",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobTypeName\": \"công nghệ tin học\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}job-type/update/2"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{domain}}job-type/delete/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DETAIL JOB TYPE",
+			"item": [
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"detailTypeName\": \"Mobile App Development\",\n    \"jobTypeId\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}detail-job-type/create"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE LINK",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"links\": [\n        {\"detailTypeLinkName\":\"Cross-platform development\"},\n        {\"detailTypeLinkName\":\"Android app development\"},\n        {\"detailTypeLinkName\":\"IOS app development\"},\n        {\"detailTypeLinkName\":\"Web to App development\"},\n        {\"detailTypeLinkName\":\"Mobile app maintainance\"}\n    ],\n    \"jobDetailTypeId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}detail-job-type/create-link"
+					},
+					"response": []
+				},
+				{
+					"name": "GET DETAIL JOB TYPE (INCLUDE LINKS)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}detail-job-type/get-all"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE DETAIL JOB TYPE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"detail_type_name\": \"Website Development\",\n    \"job_type_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}detail-job-type/update/1"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE DETAIL JOB TYPE LINK",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"detail_type_link_name\": \"Build landing page\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}detail-job-type/update-link/5"
+					},
+					"response": []
+				},
+				{
+					"name": "UPLOAD IMAGE DETAIL JOB TYPE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/lienchikhang777/Downloads/anh1.jpeg"
+								}
+							]
+						},
+						"url": "{{domain}}detail-job-type/upload/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}user/get-all?name=sky",
+							"host": [
+								"{{domain}}user"
+							],
+							"path": [
+								"get-all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "sky"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{domain}}user/delete/3"
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}user/get/1"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Melanie Sky\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}user/update/6"
+					},
+					"response": []
+				},
+				{
+					"name": "UPLOAD AVATAR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/lienchikhang777/Downloads/anh2.jpeg"
+								}
+							]
+						},
+						"url": "{{domain}}user/upload/6"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JOB",
+			"item": [
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}job/get-all"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNjk5NDc0MSwiZXhwIjoxNzE2OTk1MDQxfQ.98FDNYIZau3puBteEv0DoGtNtJJtMABGCCE8fJnh6mo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"job_name\": \"Full app developer\",\n    \"price\": 1500000,\n    \"job_desc\": \"I will design and develop your mern stack applications\",\n    \"job_short_desc\": \"I will design and develop your mern stack applications\",\n    \"job_detail_type_id\": 2,\n    \"job_detail_type_link_id\": 6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}job/create"
+					},
+					"response": []
+				},
+				{
+					"name": "GET DETAIL JOB + Pagination comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}job/get/1?page=1",
+							"host": [
+								"{{domain}}job"
+							],
+							"path": [
+								"get",
+								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzA3ODE4NywiZXhwIjoxNzE3MDc4NDg3fQ._7p-beZ7_uo5mZVW__1tijVckIniLL7jBuQqJ-34ww0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"job_name\": \"test job 2\",\n    \"adaw\": \"d12\",\n    \"price\": 1400000,\n    \"rate\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}job/update/2"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzA3OTQ4NiwiZXhwIjoxNzE3MDc5Nzg2fQ.FHCjIY4yFqG-AOApDXNYDi7Jj-aqZ8BNJZO2vqzUW9g"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{domain}}job/delete/1"
+					},
+					"response": []
+				},
+				{
+					"name": "UPLOAD IMAGE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzA4MDExNywiZXhwIjoxNzE3MDgwNDE3fQ.NCkqPO-oplVSmuoCOtnwpCWQcvWTtGbgJT32nvztbas"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/lienchikhang777/Downloads/ferari.jpeg"
+								}
+							]
+						},
+						"url": "{{domain}}job/upload/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HIRED JOB",
+			"item": [
+				{
+					"name": "GET ALL + PAGINATION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}hire-job/get-all"
+					},
+					"response": []
+				},
+				{
+					"name": "HIRE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzE2NzAwNCwiZXhwIjoxNzE3MTY3MzA0fQ.78nCnniTXjxVL8mqi2kOx0phZwYUpkOoQkQYwok0B7g"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"job_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}hire-job/hire"
+					},
+					"response": []
+				},
+				{
+					"name": "GET HIRED JOB BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}hire-job/get/2"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{domain}}hire-job/delete/2"
+					},
+					"response": []
+				},
+				{
+					"name": "FINISH HIRED JOB",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzE2ODg5MCwiZXhwIjoxNzE3MTY5MTkwfQ.G9aVeSMcSsEMIzscLjIbSKSW_tkLyq-8-eL8cBeyUFc"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{domain}}hire-job/finish/1"
+					},
+					"response": []
+				},
+				{
+					"name": "GET HIRED JOB BY USER ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzE2OTEwNywiZXhwIjoxNzE3MTY5NDA3fQ.Ly_AHqkRQD5EaBqQPHlXstSvs165kWbU0yobIGQnmds"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}hire-job/get-hired-jobs"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
