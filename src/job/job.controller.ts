@@ -21,8 +21,9 @@ export class JobController {
   getAll(
     @Query('pageSize') pageSize: string,
     @Query('page') page: string,
+    @Query('name') name: string,
   ) {
-    return this.jobService.getAll(pageSize && Number(pageSize), page && Number(page));
+    return this.jobService.getAll(pageSize && Number(pageSize), page && Number(page), name && name);
   }
 
   @Get('get/:id')

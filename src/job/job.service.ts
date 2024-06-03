@@ -4,7 +4,7 @@ import { ErrorHandlerService } from 'src/error-handler/error-handler.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ResponseService } from 'src/response/response.service';
 import { SlugService } from 'src/slug/slug.service';
-import { BodyCreateJobDto } from './dto';
+import { BodyCreateJobDto, IDefaultCondition } from './dto';
 import { BodyUpdateDto } from 'src/user/dto';
 import { bodyUpdateJobDto } from './dto/bodyUpdateJob.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
@@ -21,11 +21,35 @@ export class JobService {
     ) { }
 
 
-    async getAll(pageSize: number = 10, page: number = 1) {
+    async getAll(pageSize: number = 10, page: number = 1, name: string = '') {
         try {
 
             //connect
             await this.prisma.$connect();
+
+            //default condition
+            let defaultCondition = {
+                isDeleted: false,
+            } as IDefaultCondition
+
+            //case search name
+            if (name) {
+                defaultCondition = {
+                    ...defaultCondition,
+                    OR: [
+                        {
+                            job_name: {
+                                contains: name,
+                            }
+                        },
+                        {
+                            job_short_desc: {
+                                contains: name,
+                            }
+                        },
+                    ]
+                }
+            }
 
             //get jobs
             const jobs = await this.prisma.jobs.findMany({
@@ -37,9 +61,7 @@ export class JobService {
                     star: true,
                     rate: true,
                 },
-                where: {
-                    isDeleted: false,
-                },
+                where: defaultCondition,
                 take: pageSize,
                 skip: (page - 1) * pageSize,
             });
