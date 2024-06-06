@@ -19,6 +19,7 @@ import { CompressImageModule } from './compress-image/compress-image.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { HireJobModule } from './hire-job/hire-job.module';
+import { CommentModule } from './comment/comment.module';
 
 
 @Module({
@@ -44,6 +45,7 @@ import { HireJobModule } from './hire-job/hire-job.module';
     CompressImageModule,
     CloudinaryModule,
     HireJobModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

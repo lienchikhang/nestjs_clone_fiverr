@@ -14,6 +14,7 @@ model Comments {
   createdAt DateTime @db.Timestamp(0)
   content   String   @db.VarChar(255)
   stars     Int?     @default(0)
+  isDeleted Boolean? @default(false)
   Jobs      Jobs?    @relation(fields: [job_id], references: [job_id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_ibfk_1")
   Users     Users?   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_ibfk_2")
 
