@@ -30,12 +30,12 @@ export class AuthRefreshService extends AuthGuard('jwt') {
         } catch (error) {
             if (error instanceof TokenExpiredError)
                 return this.errorHandler.create(403, {
-                    status: 403, mess: 'TokenExpiredError', content: null
+                    status: 403, mess: 'loginExpired', content: null
                 })
 
             if (error instanceof JsonWebTokenError)
                 return this.errorHandler.create(401, {
-                    status: 401, mess: 'Unauthorized', content: null
+                    status: 401, mess: 'JsonWebTokenRefreshError', content: null
                 })
         }
     }

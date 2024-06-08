@@ -55,12 +55,21 @@ export class JobTypeService {
 
             //get all jobtypes
             const jobtypes = await this.prisma.jobTypes.findMany({
+                select: {
+                    id: true,
+                    job_type_name: true,
+                },
                 where: {
                     isDeleted: false,
                 },
                 take: pageSize,
                 skip: (page - 1) * pageSize,
-            })
+            });
+
+            // jobtypes.map((jobType) => {
+            //     id: jobType.id,
+            //     typeName: this.
+            // })
 
             //cal total page
             const totalEle = await this.prisma.jobTypes.count({

@@ -228,9 +228,18 @@ export class UserService {
             await this.compressImage.start(file.filename);
 
             //upload
-            const rs = await this.cloudinary.upload(file.filename);
+            const upload = await this.cloudinary.upload(file.filename);
 
-            return this.response.create(200, 'Upload successfully!', rs.url);
+            const rs = await this.prisma.users.update({
+                where: {
+                    user_id: isExist.user_id,
+                },
+                data: {
+                    avatar: upload.url,
+                }
+            });
+
+            return this.response.create(200, 'Upload successfully!', rs);
 
         } catch (error) {
 

@@ -75,7 +75,7 @@ export class HireJobService {
         }
     }
 
-    async hire({ job_id }: bodyHiredJobDto, userId: number) {
+    async hire(jobId: number, userId: number) {
         try {
             //connect
             await this.prisma.$connect();
@@ -83,7 +83,7 @@ export class HireJobService {
             //check job exist
             const isExist = await this.prisma.jobs.findUnique({
                 where: {
-                    job_id,
+                    job_id: jobId,
                 }
             });
 

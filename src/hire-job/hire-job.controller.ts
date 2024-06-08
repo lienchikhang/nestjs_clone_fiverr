@@ -25,14 +25,14 @@ export class HireJobController {
     return this.hireJobService.getHiredJobById(Number(id));
   }
 
-  @Post('hire')
+  @Post('hire/:id')
   @HttpCode(201)
   @UseGuards(CustomGuard)
   hire(
-    @Body() body: bodyHiredJobDto,
+    @Param('id') jobId: string,
     @Req() req: Request,
   ) {
-    return this.hireJobService.hire(body, req.user as number);
+    return this.hireJobService.hire(Number(jobId), req.user as number);
   }
 
   @Put('update/:id')

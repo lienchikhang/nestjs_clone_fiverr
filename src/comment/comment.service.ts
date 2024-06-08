@@ -49,6 +49,7 @@ export class CommentService {
             const totalComment = await this.prisma.comments.count({
                 where: {
                     job_id: isExist.job_id,
+                    isDeleted: false,
                 }
             });
 
