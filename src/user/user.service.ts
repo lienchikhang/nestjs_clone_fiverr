@@ -46,6 +46,7 @@ export class UserService {
             const users = await this.prisma.users.findMany({
                 select: {
                     full_name: true,
+                    avatar: true,
                     email: true,
                     phone: true,
                     birth_day: true,

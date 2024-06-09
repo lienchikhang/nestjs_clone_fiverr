@@ -83,6 +83,69 @@ export class JobService {
         }
     }
 
+    async getAllByUserId(userId: number, pageSize: number = 10, page: number = 1, name: string = '') {
+        try {
+
+            //connect
+            await this.prisma.$connect();
+
+            //default condition
+            let defaultCondition = {
+                job_creator: userId,
+                isDeleted: false,
+            } as IDefaultCondition
+
+            //case search name
+            if (name) {
+                defaultCondition = {
+                    ...defaultCondition,
+                    OR: [
+                        {
+                            job_name: {
+                                contains: name,
+                            }
+                        },
+                        {
+                            job_short_desc: {
+                                contains: name,
+                            }
+                        },
+                    ]
+                }
+            }
+
+            //get jobs
+            const jobs = await this.prisma.jobs.findMany({
+                select: {
+                    job_id: true,
+                    job_short_desc: true,
+                    image: true,
+                    price: true,
+                    star: true,
+                    rate: true,
+                },
+                where: defaultCondition,
+                take: pageSize,
+                skip: (page - 1) * pageSize,
+            });
+
+            //get total jobs
+            const total = await this.prisma.jobs.count();
+
+            //get total page
+            const totalPage = Math.ceil(total / pageSize);
+
+            return this.response.create(HttpStatus.OK, 'Get successfully!', { data: jobs, page: totalPage });
+
+        } catch (error) {
+            console.log('error:: ', error);
+            return this.errorHandler.create(error.status, error.response);
+        } finally {
+            //close connection
+            await this.prisma.$disconnect();
+        }
+    }
+
     async getDetailById(jobId: number, pageCmt: number = 1) {
         try {
 

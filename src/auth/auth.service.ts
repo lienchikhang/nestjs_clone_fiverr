@@ -85,7 +85,7 @@ export class AuthService {
             })
 
             //save refresh to database
-            await this.prisma.users.update({
+            const user = await this.prisma.users.update({
                 data: {
                     refresh_token: refreshToken,
                 },
@@ -97,7 +97,7 @@ export class AuthService {
             //close connection
             await this.prisma.$disconnect();
 
-            return this.response.create(200, 'Login successfully!', { accessToken, refreshToken });
+            return this.response.create(200, 'Login successfully!', { accessToken, refreshToken, full_name: user.full_name, avatar: user.avatar });
 
         } catch (error) {
             throw this.errorHandler.create(error.status, error.response);

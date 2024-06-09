@@ -1,4 +1,5 @@
 export interface IDefaultCondition {
+    job_creator: number,
     isDeleted: boolean,
     OR: [
         {

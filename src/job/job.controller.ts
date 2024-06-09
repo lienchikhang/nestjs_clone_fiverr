@@ -26,6 +26,17 @@ export class JobController {
     return this.jobService.getAll(pageSize && Number(pageSize), page && Number(page), name && name);
   }
 
+  @Get('get-all-by-userId')
+  @HttpCode(200)
+  getAllByUserId(
+    @Query('pageSize') pageSize: string,
+    @Query('page') page: string,
+    @Query('name') name: string,
+    @Req() req: Request,
+  ) {
+    return this.jobService.getAllByUserId(req.user as number, pageSize && Number(pageSize), page && Number(page), name && name);
+  }
+
   @Get('get/:id')
   @HttpCode(200)
   getDetailById(
