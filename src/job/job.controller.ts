@@ -28,12 +28,14 @@ export class JobController {
 
   @Get('get-all-by-userId')
   @HttpCode(200)
+  @UseGuards(CustomGuard)
   getAllByUserId(
     @Query('pageSize') pageSize: string,
     @Query('page') page: string,
     @Query('name') name: string,
     @Req() req: Request,
   ) {
+    console.log('req userrr', req.user as number);
     return this.jobService.getAllByUserId(req.user as number, pageSize && Number(pageSize), page && Number(page), name && name);
   }
 
@@ -43,7 +45,7 @@ export class JobController {
     @Param('id') jobId: string,
     @Query('page') page: string
   ) {
-    return this.jobService.getDetailById(Number(jobId), page && Number(page));
+    return this.jobService.getDetailById(Number(jobId));
   }
 
   @Post('create')

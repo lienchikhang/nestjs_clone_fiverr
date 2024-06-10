@@ -146,7 +146,7 @@ export class JobService {
         }
     }
 
-    async getDetailById(jobId: number, pageCmt: number = 1) {
+    async getDetailById(jobId: number) {
         try {
 
             //connect
@@ -167,21 +167,6 @@ export class JobService {
                             full_name: true,
                         }
                     },
-                    Comments: {
-                        select: {
-                            stars: true,
-                            createdAt: true,
-                            content: true,
-                            Users: {
-                                select: {
-                                    avatar: true,
-                                    full_name: true,
-                                }
-                            }
-                        },
-                        take: 5,
-                        skip: (pageCmt - 1) * 5
-                    }
                 },
                 where: {
                     job_id: jobId,
