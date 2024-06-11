@@ -48,11 +48,17 @@
 				{
 					"name": "REFRESH",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInJvbGUiOm51bGwsImlhdCI6MTcxODA5NTQ4NiwiZXhwIjoxNzE4MDk2Njg2fQ.sXF6E8U1_GM0o8PhiTk_iSToLZkvpAGmpDD-mTOzAXY"
+							}
+						},
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNTU4ODU4NiwiZXhwIjoxNzE1NTg4NjA2fQ.ZbvK_8SAESw9ZRTcBsmyxgXEVrdWnSr0H8CCgsVbZ3",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzg2Mjg2MywiZXhwIjoxNzE3ODY0MDYzfQ.YyhpZPrDnbCRgoUkQwQdWLzc89CZZfPfvz00nYeJRzA",
 								"type": "text"
 							}
 						],
@@ -72,7 +78,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jobTypeName\": \"Programming & Tech\"\n}",
+							"raw": "{\n    \"jobTypeName\": \"Photography\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -127,14 +133,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jobTypeName\": \"công nghệ tin học\"\n}",
+							"raw": "{\n    \"jobTypeName\": \"Video & Animation\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{domain}}job-type/update/2"
+						"url": "{{domain}}job-type/update/4"
 					},
 					"response": []
 				},
@@ -263,7 +269,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}user/get-all?name=sky",
+							"raw": "{{domain}}user/get-all",
 							"host": [
 								"{{domain}}user"
 							],
@@ -278,7 +284,8 @@
 								},
 								{
 									"key": "name",
-									"value": "sky"
+									"value": "sky",
+									"disabled": true
 								}
 							]
 						}
@@ -332,11 +339,11 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/lienchikhang777/Downloads/anh2.jpeg"
+									"src": "/Users/lienchikhang777/Downloads/messi.jpeg"
 								}
 							]
 						},
-						"url": "{{domain}}user/upload/6"
+						"url": "{{domain}}user/upload/1"
 					},
 					"response": []
 				}
@@ -350,13 +357,33 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{domain}}job/get-all"
+						"url": {
+							"raw": "{{domain}}job/get-all?page=1",
+							"host": [
+								"{{domain}}job"
+							],
+							"path": [
+								"get-all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "CREATE",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInJvbGUiOm51bGwsImlhdCI6MTcxODA5NTU3NiwiZXhwIjoxNzE4MDk1ODc2fQ.GpsgC1cCVTzC9GOsp1n1h2NDAD23MmL_Swx8Jl44YeY"
+							}
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -367,7 +394,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"job_name\": \"Full app developer\",\n    \"price\": 1500000,\n    \"job_desc\": \"I will design and develop your mern stack applications\",\n    \"job_short_desc\": \"I will design and develop your mern stack applications\",\n    \"job_detail_type_id\": 2,\n    \"job_detail_type_link_id\": 6\n}",
+							"raw": "{\n    \"job_name\": \"NextJs\",\n    \"price\": 950000,\n    \"job_desc\": \"I will do React job\",\n    \"job_short_desc\": \"I will design and develop your mern stack applications javascript\",\n    \"job_detail_type_id\": 2,\n    \"job_detail_type_link_id\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -447,7 +474,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzA4MDExNywiZXhwIjoxNzE3MDgwNDE3fQ.NCkqPO-oplVSmuoCOtnwpCWQcvWTtGbgJT32nvztbas"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInJvbGUiOm51bGwsImlhdCI6MTcxODA4ODk4NywiZXhwIjoxNzE4MDg5Mjg3fQ.DyuZNizkWFKNr-kyNp5WqiG-30yKsJnStvQY2DGgixc"
 							}
 						},
 						"method": "POST",
@@ -458,11 +485,26 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/lienchikhang777/Downloads/ferari.jpeg"
+									"src": "/Users/lienchikhang777/Downloads/n.jpeg"
 								}
 							]
 						},
 						"url": "{{domain}}job/upload/5"
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL BY USERID + PAGINATION + SEARCH BY NAME",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzk0NjgxNiwiZXhwIjoxNzE3OTQ3MTE2fQ.QH5qCBjzPLEfV5JpG4hmsxFy6yj5su1kZgeQy8IaaFc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}job/get-all-by-userId"
 					},
 					"response": []
 				}
@@ -486,21 +528,21 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzE2NzAwNCwiZXhwIjoxNzE3MTY3MzA0fQ.78nCnniTXjxVL8mqi2kOx0phZwYUpkOoQkQYwok0B7g"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzg2MTA4NSwiZXhwIjoxNzE3ODYxMzg1fQ.rXsbrgV5g69WT5YNOUdkb0ZLgwK0oPxe4GfhV_NCafM"
 							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"job_id\": 1\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{domain}}hire-job/hire"
+						"url": "{{domain}}hire-job/hire/1"
 					},
 					"response": []
 				},
@@ -543,12 +585,89 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzE2OTEwNywiZXhwIjoxNzE3MTY5NDA3fQ.Ly_AHqkRQD5EaBqQPHlXstSvs165kWbU0yobIGQnmds"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzk0NjgxNiwiZXhwIjoxNzE3OTQ3MTE2fQ.QH5qCBjzPLEfV5JpG4hmsxFy6yj5su1kZgeQy8IaaFc"
 							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": "{{domain}}hire-job/get-hired-jobs"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COMMENT",
+			"item": [
+				{
+					"name": "GET BY JOB ID + pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{domain}}comment/get/2"
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInJvbGUiOm51bGwsImlhdCI6MTcxODA5NTQ4NiwiZXhwIjoxNzE4MDk1Nzg2fQ.R4PA23pFHJpOj8iOa6HCl6gPOCELqt0Xpg_EzVIpjiY"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"I run an active company that's serving 10s of thousands of active members. We need work produced at a different, much higher, standard of work produced. This is my go-to freelancer on Fiverr for design and coding work!\",\n    \"stars\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}comment/add/2"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE BY ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzY4MjQ2NCwiZXhwIjoxNzE3NjgyNzY0fQ.fnE1hrs1TUvXGRZ6jQorEKKooAuijdzkNJRSdn5aD8k"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{domain}}comment/delete/3"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOm51bGwsImlhdCI6MTcxNzY4MjgwMSwiZXhwIjoxNzE3NjgzMTAxfQ.OaKnY6TxAY7_79l-l2cDa05EFxUaqSfUYxURQlMBsMA"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"he is too good actually ,you can blindly trust this kind person ,he is too good in programming and he is too kind\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{domain}}comment/update/3"
 					},
 					"response": []
 				}
