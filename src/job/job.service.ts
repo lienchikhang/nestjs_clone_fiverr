@@ -21,7 +21,7 @@ export class JobService {
     ) { }
 
 
-    async getAll(pageSize: number = 10, page: number = 1, name: string = '') {
+    async getAll(pageSize: number = 12, page: number = 1, name: string = '') {
         try {
 
             //connect
@@ -67,7 +67,9 @@ export class JobService {
             });
 
             //get total jobs
-            const total = await this.prisma.jobs.count();
+            const total = await this.prisma.jobs.count({
+                where: defaultCondition,
+            });
 
             //get total page
             const totalPage = Math.ceil(total / pageSize);
@@ -83,7 +85,7 @@ export class JobService {
         }
     }
 
-    async getAllByUserId(userId: number, pageSize: number = 10, page: number = 1, name: string = '') {
+    async getAllByUserId(userId: number, pageSize: number = 5, page: number = 1, name: string = '') {
         try {
 
             //connect
@@ -130,7 +132,9 @@ export class JobService {
             });
 
             //get total jobs
-            const total = await this.prisma.jobs.count();
+            const total = await this.prisma.jobs.count({
+                where: defaultCondition
+            });
 
             //get total page
             const totalPage = Math.ceil(total / pageSize);
@@ -351,6 +355,16 @@ export class JobService {
 
             //upload
             const rs = await this.cloudinary.upload(file.filename);
+
+            console.log({ rs })
+            await this.prisma.jobs.update({
+                where: {
+                    job_id: isExist.job_id,
+                },
+                data: {
+                    image: rs.url,
+                }
+            });
 
             return this.response.create(HttpStatus.OK, 'Upload successfully!', rs.url);
 

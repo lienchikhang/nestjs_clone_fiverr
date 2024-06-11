@@ -94,6 +94,8 @@ export class AuthService {
                 }
             })
 
+
+
             //close connection
             await this.prisma.$disconnect();
 

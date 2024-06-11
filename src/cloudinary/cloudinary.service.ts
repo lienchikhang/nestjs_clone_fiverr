@@ -16,7 +16,9 @@ export class CloudinaryService {
 
     constructor() { }
 
-    upload(fileName: string) {
+    async upload(fileName: string) {
+        console.log('path', this.final);
+        console.log('pathss', path.join(this.final, fileName));
         return cloudinary.uploader.upload(path.join(this.final, fileName), { folder: 'clone_fiverr', public_id: fileName, upload_preset: 'dinfp3e0' })
     }
 }

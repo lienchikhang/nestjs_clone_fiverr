@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { rejects } from 'assert';
 import Jimp from 'jimp';
 import * as path from 'path';
 
@@ -25,6 +26,9 @@ export class CompressImageService {
                 .then(() => {
                     console.log('Compress successfully!');
                     resolve(path.join(this.final, filePath));
+                }).catch((err) => {
+                    console.log('error', err);
+                    rejects(err);
                 })
         })
     }

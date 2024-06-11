@@ -1,7 +1,8 @@
-import { Body, Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BodyLoginDto, BodyRegisterDto } from './dto';
 import { AuthRefreshService } from 'src/auth-refresh/auth-refresh.service';
+import { Logininterceptor } from 'src/interceptors/login.interceptor';
 
 
 @Controller('auth')
@@ -18,6 +19,7 @@ export class AuthController {
 
 
   @Post('login')
+  @UseInterceptors(Logininterceptor)
   @HttpCode(200)
   login(
     @Body() body: BodyLoginDto
